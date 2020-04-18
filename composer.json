@@ -1,0 +1,26 @@
+{
+  "name": "linzbauer/shard-cache",
+  "description": "TBD",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Armin Linzbauer",
+      "email": "armin.linzbauer@gmail.com"
+    }
+  ],
+  "license": "GPL-3.0-only",
+  "require": {
+    "php": "^7.3"
+  },
+  "homepage": "https://github.com/arminlinzbauer/shard-cache",
+  "readme": "./README.md",
+  "time": "2020-04-20",
+  "autoload": {
+    "psr-4": {
+      "Linzbauer\\ShardCache\\": "src/",
+      "Linzbauer\\ShardCache\\Logger\\": "src/Logger",
+      "Linzbauer\\ShardCache\\Exceptions\\": "src/Exceptions",
+      "Linzbauer\\ShardCache\\Cacheables\\": "src/Cacheables"
+    }
+  }
+}
