@@ -1,6 +1,6 @@
 {
   "name": "linzbauer/shard-cache",
-  "description": "TBD",
+  "description": "Atomic Referenced-Object Caching System based on Entities Using GUIDs as Unique Identifiers",
   "type": "library",
   "authors": [
     {
