@@ -130,7 +130,7 @@ final class ShardCache
         $this->saveOnChange = true;
     }
 
-    public function save(): void
+    private function save(): void
     {
         $this->cacheHandler->set($this->memoryCache);
     }
@@ -225,7 +225,7 @@ final class ShardCache
         $this->saveChanges();
     }
 
-    private function saveChanges(): void
+    public function saveChanges(): void
     {
         if ($this->saveOnChange) {
             $this->save();
