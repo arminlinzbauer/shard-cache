@@ -159,6 +159,12 @@ final class ShardCache
         $this->rebuild();
     }
 
+    private function forcePurge(): void
+    {
+        $this->cacheHandler->delete();
+        $this->memoryCache = $this->getCacheSkeleton();
+    }
+
     /**
      * @param string $guid
      * @param string ...$namespaces
@@ -302,6 +308,17 @@ final class ShardCache
         $this->saveChanges();
     }
 
+    public function destroyInstance(): void
+    {
+        $this->forcePurge();
+        unset(self::$instances[$this->getName()]);
+    }
+
+    public static function unregisterInstance(string $instanceName): void
+    {
+        self::$instances[$instanceName]->destroyInstance();
+    }
+  
     public static function getInstance(string $instanceName): ?ShardCache
     {
         if(!empty(self::$instances[$instanceName])) {
