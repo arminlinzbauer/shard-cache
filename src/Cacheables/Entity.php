@@ -12,14 +12,15 @@ use Linzbauer\ShardCache\ShardCache;
  */
 abstract class Entity
 {
-    /**
-     * @var string
-     */
+    /** @var string */
+    private $guid;
+    /** @var string */
     protected $shardCache;
 
-    public function __construct(ShardCache $shardCache)
+    public function __construct(ShardCache $shardCache, string $guid)
     {
         $this->shardCache = $shardCache->getName();
+        $this->guid = strtolower($guid);
     }
 
     public function setShardCache(ShardCache $shardCache): void
@@ -29,7 +30,10 @@ abstract class Entity
         $this->saveChanges($save);
     }
 
-    abstract public function getGuid(): string;
+    public function getGuid(): string
+    {
+        return $this->guid;
+    }
 
     public function getShardCache(): ShardCache
     {

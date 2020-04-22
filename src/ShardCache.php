@@ -271,14 +271,20 @@ final class ShardCache
             if (!array_key_exists($namespace, $this->memoryCache->namespaces)) {
                 continue;
             }
-            $namespaceEntities[$namespace] = array_filter($this->memoryCache->namespaces[$namespace]);
+            $namespaceEntities[$namespace] = array_map(function ($a) {
+                return $a->getGuid();
+            }, array_filter($this->memoryCache->namespaces[$namespace]));
         }
 
         if (count($namespaceEntities) <= 1) {
             return current($namespaceEntities);
         }
         $master = array_filter($this->memoryCache->entities);
-        return array_intersect($master, ...array_values($namespaceEntities));
+        return array_map(function ($a) use ($master) {
+            return $master[$a];
+        }, array_intersect(array_map(function ($a) {
+            return $a->getGuid();
+        }, $master), ...array_values($namespaceEntities)));
     }
 
     public function registerEntity(Entity $entity, ?string $namespace = null): void
