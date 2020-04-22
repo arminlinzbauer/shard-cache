@@ -291,6 +291,7 @@ final class ShardCache
                 }
             }
         } else {
+            $this->unregisterGuidFromAllNamespaces($guid);
             unset($this->memoryCache->entities[$guid]);
         }
         $this->saveChanges();
