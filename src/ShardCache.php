@@ -34,7 +34,7 @@ final class ShardCache
      */
     private $cacheHandler;
     /**
-     * @var array
+     * @var stdClass
      */
     private $memoryCache;
     /**
@@ -64,6 +64,7 @@ final class ShardCache
         $this->setCacheHandler($cacheHandler);
         $this->setLogger($logger);
         $this->repositories = [];
+        $this->memoryCache = $this->getCacheSkeleton();
 
         if (!empty(self::$instances[$cacheHandler->getName()])) {
             throw new DuplicateCache();
@@ -120,8 +121,13 @@ final class ShardCache
     {
         $this->disableSaveOnChange();
         $this->memoryCache = $this->getCacheSkeleton();
-        foreach ($this->repositories as $repository) {
-            $repository->fetchAllEntities();
+        $entityNames = array_keys($this->repositories);
+        $entities = [];
+        foreach ($entityNames as $entityName) {
+            $entities[$entityName] = $this->repositories[$entityName]->fetchAllEntities();
+        }
+        foreach ($entityNames as $entityName) {
+            $this->repositories[$entityName]->finalizeEntities($entities[$entityName]);
         }
         $this->enableSaveOnChange();
         $this->save();
@@ -206,7 +212,10 @@ final class ShardCache
             }
 
             $entityName = strtolower($stat[$guid]);
-            $this->repositories[$entityName]->fetchEntityByGuid($guid);
+            $this->disableSaveOnChange();
+            $entity = $this->repositories[$entityName]->fetchEntityByGuid($guid);
+            $this->repositories[$entityName]->finalizeEntities([$entity->getGuid() => $entity]);
+            $this->enableSaveOnChange();
             $this->saveChanges();
         }
 
@@ -219,6 +228,7 @@ final class ShardCache
         }
 
         foreach ($namespaces as $namespace) {
+            $namespace = strtolower($namespace);
             if (!array_key_exists($namespace, $this->memoryCache->namespaces)) {
                 continue;
             }
@@ -232,8 +242,8 @@ final class ShardCache
 
     private function unregisterGuidFromAllNamespaces(string $guid): void
     {
-        foreach (array_keys($this->memoryCache->namespaces) as $namespace) {
-            unset($this->memoryCache->namespaces[$namespace][$guid]);
+        foreach ($this->memoryCache->namespaces as $namespace) {
+            unset($namespace[$guid]);
         }
         $this->saveChanges();
     }
@@ -257,6 +267,7 @@ final class ShardCache
 
         $namespaceEntities = [];
         foreach ($namespaces as $namespace) {
+            $namespace = strtolower($namespace);
             if (!array_key_exists($namespace, $this->memoryCache->namespaces)) {
                 continue;
             }
@@ -264,7 +275,7 @@ final class ShardCache
         }
 
         if (count($namespaceEntities) <= 1) {
-            return $namespaceEntities;
+            return current($namespaceEntities);
         }
         $master = array_filter($this->memoryCache->entities);
         return array_intersect($master, ...$namespaceEntities);

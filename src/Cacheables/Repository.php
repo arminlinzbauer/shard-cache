@@ -32,6 +32,13 @@ abstract class Repository
     abstract public function fetchAllEntities(): array;
 
     /**
+     * @param Entity[] $entities
+     */
+    public function finalizeEntities(array $entities): void
+    {
+    }
+
+    /**
      * @return EntityStat|EntityStatEntry[]
      */
     abstract public function getEntityStat(): EntityStat;
