@@ -22,7 +22,7 @@ use stdClass;
 final class ShardCache
 {
     /**
-     * @var stdClass
+     * @var ShardCache[]
      */
     private static $instances = [];
     /**
@@ -65,10 +65,10 @@ final class ShardCache
         $this->setLogger($logger);
         $this->repositories = [];
 
-        if (in_array($cacheHandler->getName(), self::$instances)) {
+        if (!empty(self::$instances[$cacheHandler->getName()])) {
             throw new DuplicateCache();
         } else {
-            array_push(self::$instances, $cacheHandler->getName());
+            self::$instances[$cacheHandler->getName()] = $this;
         }
 
         if ($memoryCache = $this->cacheHandler->get()) {
@@ -77,6 +77,11 @@ final class ShardCache
             $this->memoryCache = $this->getCacheSkeleton();
             $this->rebuild();
         }
+    }
+
+    public function getName(): string
+    {
+        return $this->cacheHandler->getName();
     }
 
     /**
@@ -297,6 +302,7 @@ final class ShardCache
                 }
             }
         } else {
+            $this->unregisterGuidFromAllNamespaces($guid);
             unset($this->memoryCache->entities[$guid]);
         }
         $this->saveChanges();
@@ -311,5 +317,13 @@ final class ShardCache
     public static function unregisterInstance(string $instanceName): void
     {
         self::$instances[$instanceName]->destroyInstance();
+    }
+  
+    public static function getInstance(string $instanceName): ?ShardCache
+    {
+        if(!empty(self::$instances[$instanceName])) {
+            return self::$instances[$instanceName];
+        }
+        return null;
     }
 }
