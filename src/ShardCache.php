@@ -70,11 +70,13 @@ final class ShardCache
         } else {
             self::$instances[$cacheHandler->getName()] = $this;
         }
+    }
 
+    public function finishInitialization(): void
+    {
         if ($memoryCache = $this->cacheHandler->get()) {
             $this->memoryCache = $memoryCache;
         } else {
-            $this->memoryCache = $this->getCacheSkeleton();
             $this->rebuild();
         }
     }
@@ -185,7 +187,7 @@ final class ShardCache
                 $stat = $stat->getArrayCopy();
             } else {
                 trigger_error(
-                    'ShardCache: Using individual repository\'s getEntityStat()-functions. '.
+                    'ShardCache: Using individual repository\'s getEntityStat()-functions. ' .
                     'Providing a cumulated DataLayerStat function with ' .
                     self::class . '::registerDataLayerStatFunction(callable $callback) might result in slightly ' .
                     'improved performance by only having to query the database once per stat request.',
@@ -318,10 +320,10 @@ final class ShardCache
     {
         self::$instances[$instanceName]->destroyInstance();
     }
-  
+
     public static function getInstance(string $instanceName): ?ShardCache
     {
-        if(!empty(self::$instances[$instanceName])) {
+        if (!empty(self::$instances[$instanceName])) {
             return self::$instances[$instanceName];
         }
         return null;
