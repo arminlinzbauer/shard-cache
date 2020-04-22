@@ -278,7 +278,7 @@ final class ShardCache
             return current($namespaceEntities);
         }
         $master = array_filter($this->memoryCache->entities);
-        return array_intersect($master, ...$namespaceEntities);
+        return array_intersect($master, ...array_values($namespaceEntities));
     }
 
     public function registerEntity(Entity $entity, ?string $namespace = null): void
