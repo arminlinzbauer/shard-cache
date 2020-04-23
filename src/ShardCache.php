@@ -231,7 +231,7 @@ final class ShardCache
             return null;
         }
 
-        if (empty($namespace)) {
+        if (empty($namespaces)) {
             return $this->memoryCache->entities[$guid];
         }
 
@@ -242,7 +242,7 @@ final class ShardCache
             }
             if (!array_key_exists($guid, $this->memoryCache->namespaces[$namespace])) {
                 $this->logger->log(
-                    'ShardCache: Entity \'' . $guid . '\' not in all required namespaces ('.
+                    'ShardCache: Entity \'' . $guid . '\' not in all required namespaces (' .
                     implode(', ', $namespaces) .
                     ').'
                 );
@@ -284,20 +284,35 @@ final class ShardCache
             if (!array_key_exists($namespace, $this->memoryCache->namespaces)) {
                 continue;
             }
-            $namespaceEntities[$namespace] = array_map(function ($a) {
-                return $a->getGuid();
-            }, array_filter($this->memoryCache->namespaces[$namespace]));
+            $guids = $this->memoryCache->namespaces[$namespace];
+            $namespaceEntities[$namespace] = $guids;
         }
 
-        if (count($namespaceEntities) <= 1) {
-            return current($namespaceEntities);
-        }
-        $master = array_filter($this->memoryCache->entities);
-        return array_map(function ($a) use ($master) {
-            return $master[$a];
-        }, array_intersect(array_map(function ($a) {
-            return $a->getGuid();
-        }, $master), ...array_values($namespaceEntities)));
+        $master = $this->toGuidList($this->memoryCache->entities);
+        $result = array_intersect($master, ...array_values($namespaceEntities));
+        return $this->toEntityList($result);
+    }
+
+    /**
+     * @param Entity[] $entityList
+     * @return string[]
+     */
+    private function toGuidList(array $entityList): array
+    {
+        $entityList = array_filter($entityList);
+        $output = array_map(function($entity) { return $entity->getGuid(); }, $entityList);
+        return array_filter($output);
+    }
+
+    /**
+     * @param string[] $guidList
+     * @return Entity[]
+     */
+    private function toEntityList(array $guidList): array
+    {
+        $guidList = array_filter($guidList);
+        $output = array_map(function($guid) { return $this->requestEntity($guid); }, $guidList);
+        return array_filter($output);
     }
 
     public function registerEntity(Entity $entity, ?string $namespace = null): void
@@ -306,7 +321,7 @@ final class ShardCache
         if ($namespace) {
             $namespace = strtolower($namespace);
             $this->registerNamespace($namespace);
-            $this->memoryCache->namespaces[$namespace][$guid] = $entity;
+            $this->memoryCache->namespaces[$namespace][$guid] = $guid;
         }
         $this->memoryCache->entities[$guid] = $entity;
         $this->saveChanges();
