@@ -76,8 +76,10 @@ final class ShardCache
     public function finishInitialization(): void
     {
         if ($memoryCache = $this->cacheHandler->get()) {
+            $this->logger->log('ShardCache: Loading from cache file ' . $this->getName());
             $this->memoryCache = $memoryCache;
         } else {
+            $this->logger->log('ShardCache: Fetching from database into ' . $this->getName());
             $this->rebuild();
         }
     }
@@ -163,12 +165,14 @@ final class ShardCache
 
     public function purge(): void
     {
+        $this->logger->log('ShardCache: Purging cache file ' . $this->getName());
         $this->cacheHandler->delete();
         $this->rebuild();
     }
 
     private function forcePurge(): void
     {
+        $this->logger->log('ShardCache: Force-Purging cache file ' . $this->getName());
         $this->cacheHandler->delete();
         $this->memoryCache = $this->getCacheSkeleton();
     }
@@ -183,6 +187,10 @@ final class ShardCache
         $guid = strtolower($guid);
 
         if (!array_key_exists($guid, $this->memoryCache->entities)) {
+            $this->logger->log(
+                'ShardCache: Trying to fetch entity \'' . $guid .
+                '\' from database into ' . $this->getName()
+            );
             if (is_callable($this->dataLayerStatFunction)) {
                 $stat = call_user_func($this->dataLayerStatFunction, $guid);
                 if (!$stat instanceof EntityStat) {
@@ -208,7 +216,7 @@ final class ShardCache
                 $this->memoryCache->entities[$guid] = null;
                 $this->unregisterGuidFromAllNamespaces($guid);
                 $this->saveChanges();
-                return null;
+                $this->logger->log('ShardCache: Entity \'' . $guid . '\' not found.');
             }
 
             $entityName = strtolower($stat[$guid]);
@@ -233,6 +241,11 @@ final class ShardCache
                 continue;
             }
             if (!array_key_exists($guid, $this->memoryCache->namespaces[$namespace])) {
+                $this->logger->log(
+                    'ShardCache: Entity \'' . $guid . '\' not in all required namespaces ('.
+                    implode(', ', $namespaces) .
+                    ').'
+                );
                 return null;
             }
         }
@@ -330,6 +343,7 @@ final class ShardCache
     public function destroyInstance(): void
     {
         $this->forcePurge();
+        $this->logger->log('ShardCache: Destroying instance ' . $this->getName());
         unset(self::$instances[$this->getName()]);
     }
 
