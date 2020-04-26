@@ -185,6 +185,8 @@ final class ShardCache
     public function requestEntity(string $guid, string ...$namespaces): ?Entity
     {
         $guid = strtolower($guid);
+        $namespaces = empty($namespaces) ? [] : $namespaces;
+        $namespaces = array_filter($namespaces);
 
         if (!array_key_exists($guid, $this->memoryCache->entities)) {
             $this->logger->log(
@@ -274,6 +276,9 @@ final class ShardCache
      */
     public function requestAllEntities(string ...$namespaces): array
     {
+        $namespaces = empty($namespaces) ? [] : $namespaces;
+        $namespaces = array_filter($namespaces);
+
         if (empty($namespaces)) {
             return array_filter($this->memoryCache->entities);
         }
