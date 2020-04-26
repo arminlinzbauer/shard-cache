@@ -179,10 +179,10 @@ final class ShardCache
 
     /**
      * @param string $guid
-     * @param string ...$namespaces
+     * @param string|null ...$namespaces
      * @return Entity|null
      */
-    public function requestEntity(string $guid, string ...$namespaces): ?Entity
+    public function requestEntity(string $guid, ?string ...$namespaces): ?Entity
     {
         $guid = strtolower($guid);
         $namespaces = empty($namespaces) ? [] : $namespaces;
@@ -271,10 +271,10 @@ final class ShardCache
     }
 
     /**
-     * @param string ...$namespaces
+     * @param string|null ...$namespaces
      * @return Entity[]
      */
-    public function requestAllEntities(string ...$namespaces): array
+    public function requestAllEntities(?string ...$namespaces): array
     {
         $namespaces = empty($namespaces) ? [] : $namespaces;
         $namespaces = array_filter($namespaces);
