@@ -219,6 +219,7 @@ final class ShardCache
                 $this->unregisterGuidFromAllNamespaces($guid);
                 $this->saveChanges();
                 $this->logger->log('ShardCache: Entity \'' . $guid . '\' not found.');
+                return null;
             }
 
             $entityName = strtolower($stat[$guid]);
