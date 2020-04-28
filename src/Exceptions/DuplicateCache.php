@@ -1,16 +1,16 @@
 <?php
 
 
-namespace Linzbauer\ShardCache\Exceptions;
+namespace ShardCache\Exceptions;
 
 
 use Exception;
-use Linzbauer\ShardCache\CacheHandler;
-use Linzbauer\ShardCache\ShardCache;
+use ShardCache\CacheHandler;
+use ShardCache\ShardCache;
 
 /**
  * Class DuplicateCache
- * @package Linzbauer\ShardCache\Exceptions
+ * @package ShardCache\Exceptions
  */
 final class DuplicateCache extends Exception
 {

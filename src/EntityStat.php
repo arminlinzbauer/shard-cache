@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Linzbauer\ShardCache;
+namespace ShardCache;
 
 
 use ArrayObject;
@@ -9,7 +9,7 @@ use InvalidArgumentException;
 
 /**
  * Class EntityStat
- * @package Linzbauer\ShardCache
+ * @package ShardCache
  */
 final class EntityStat extends ArrayObject
 {

@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Linzbauer\ShardCache;
+namespace ShardCache;
 
 
 /**
  * Class EntityStatEntry
- * @package Linzbauer\ShardCache
+ * @package ShardCache
  */
 final class EntityStatEntry
 {

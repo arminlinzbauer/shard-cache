@@ -1,16 +1,16 @@
 <?php
 
 
-namespace Linzbauer\ShardCache\Cacheables;
+namespace ShardCache\Cacheables;
 
 
-use Linzbauer\ShardCache\EntityStat;
-use Linzbauer\ShardCache\EntityStatEntry;
-use Linzbauer\ShardCache\ShardCache;
+use ShardCache\EntityStat;
+use ShardCache\EntityStatEntry;
+use ShardCache\ShardCache;
 
 /**
  * Class Repository
- * @package Linzbauer\ShardCache\Cacheables
+ * @package ShardCache\Cacheables
  */
 abstract class Repository
 {
