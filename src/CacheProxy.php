@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Linzbauer\ShardCache;
+namespace ShardCache;
 
 /**
  * Class CacheProxy
- * @package Linzbauer\ShardCache
+ * @package ShardCache
  */
 final class CacheProxy
 {

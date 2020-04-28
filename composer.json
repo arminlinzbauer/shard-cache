@@ -17,10 +17,10 @@
   "time": "2020-04-20",
   "autoload": {
     "psr-4": {
-      "Linzbauer\\ShardCache\\": "src/",
-      "Linzbauer\\ShardCache\\Logger\\": "src/Logger",
-      "Linzbauer\\ShardCache\\Exceptions\\": "src/Exceptions",
-      "Linzbauer\\ShardCache\\Cacheables\\": "src/Cacheables"
+      "ShardCache\\": "src/",
+      "ShardCache\\Logger\\": "src/Logger",
+      "ShardCache\\Exceptions\\": "src/Exceptions",
+      "ShardCache\\Cacheables\\": "src/Cacheables"
     }
   }
 }

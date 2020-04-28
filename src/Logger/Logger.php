@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Linzbauer\ShardCache\Logger;
+namespace ShardCache\Logger;
 
 /**
  * ShardCache-Compatible Logger Interface
- * @package Linzbauer\ShardCache\Logger
+ * @package ShardCache\Logger
  */
 interface Logger
 {
