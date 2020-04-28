@@ -288,10 +288,14 @@ final class ShardCache
         foreach ($namespaces as $namespace) {
             $namespace = strtolower($namespace);
             if (!array_key_exists($namespace, $this->memoryCache->namespaces)) {
-                continue;
+                return [];
             }
             $guids = $this->memoryCache->namespaces[$namespace];
             $namespaceEntities[$namespace] = $guids;
+        }
+
+        if(empty($namespaceEntities)) {
+            return [];
         }
 
         $master = $this->toGuidList($this->memoryCache->entities);
