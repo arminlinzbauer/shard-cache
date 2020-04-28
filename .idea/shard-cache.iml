@@ -2,12 +2,12 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/Exceptions" isTestSource="false" packagePrefix="Linzbauer\ShardCache\Exceptions\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Exceptions" isTestSource="false" packagePrefix="ShardCache\Exceptions\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Logger" isTestSource="false" packagePrefix="Linzbauer\ShardCache\Logger\" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Cacheables" isTestSource="false" packagePrefix="Linzbauer\ShardCache\Cacheables\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Logger" isTestSource="false" packagePrefix="ShardCache\Logger\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Cacheables" isTestSource="false" packagePrefix="ShardCache\Cacheables\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="Linzbauer\ShardCache\" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="ShardCache\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
     </content>
     <orderEntry type="inheritedJdk" />

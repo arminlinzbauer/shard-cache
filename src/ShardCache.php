@@ -5,19 +5,19 @@
 /** @noinspection PhpUnused */
 
 
-namespace Linzbauer\ShardCache;
+namespace ShardCache;
 
 use InvalidArgumentException;
-use Linzbauer\ShardCache\Cacheables\Entity;
-use Linzbauer\ShardCache\Cacheables\Repository;
-use Linzbauer\ShardCache\Exceptions\DuplicateCache;
-use Linzbauer\ShardCache\Logger\Logger;
-use Linzbauer\ShardCache\Logger\NullLogger;
+use ShardCache\Cacheables\Entity;
+use ShardCache\Cacheables\Repository;
+use ShardCache\Exceptions\DuplicateCache;
+use ShardCache\Logger\Logger;
+use ShardCache\Logger\NullLogger;
 use stdClass;
 
 /**
  * Class ShardCache
- * @package Linzbauer\ShardCache
+ * @package ShardCache
  */
 final class ShardCache
 {

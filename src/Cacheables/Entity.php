@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Linzbauer\ShardCache\Cacheables;
+namespace ShardCache\Cacheables;
 
 
-use Linzbauer\ShardCache\ShardCache;
+use ShardCache\ShardCache;
 
 /**
  * Class Entity
- * @package Linzbauer\ShardCache\Cacheables
+ * @package ShardCache\Cacheables
  */
 abstract class Entity
 {

@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Linzbauer\ShardCache;
+namespace ShardCache;
 
 /**
  * Interface CacheHandler
- * @package Linzbauer\ShardCache
+ * @package ShardCache
  */
 interface CacheHandler
 {
